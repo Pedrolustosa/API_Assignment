@@ -32,6 +32,15 @@ app.MapGet("/assignments", async (AppDbContext db) =>
     }
 );
 
+app.MapGet("/assignments/{id}", async(int id, AppDbContext db) => await db.Assignments.FindAsync(id) is Assignment assignment ? Results.Ok(assignment) : Results.NotFound());
+
+app.MapGet("/assignments/concluded", async (AppDbContext db) =>
+    {
+        var result = await db.Assignments.Where(a => a.IsConcluded == true).ToListAsync();
+        return result;
+    }
+);
+
 /// <summary>
 /// Create a Assignment
 /// </summary>
